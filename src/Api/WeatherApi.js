@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const useWeather = (country) => {
+const WeatherApi = (country) => {
     const [result, setResult] = useState(null);
     useEffect(() => {
         const fetchData = async () => {
@@ -28,4 +28,4 @@ const useWeather = (country) => {
     return result;
 };
 
-export default useWeather;
+export default WeatherApi;
