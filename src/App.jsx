@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-    <h1>Weather App with Redux-Toolkit</h1>
+    <h1 className='text-5xl'>Weather App with Redux-Toolkit</h1>
     </>
   )
 }
