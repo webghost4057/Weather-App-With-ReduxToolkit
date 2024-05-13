@@ -1,24 +1,19 @@
 import {createSlice} from '@reduxjs/toolkit'
 import WeatherApi from '../Api/WeatherApi'
 const initialState={
-    data:null
+    details : null
 }
+
+
 export const weatherSlice = createSlice({
-    name : 'weather',
-    initialState,
+    name:'weather', 
+    initialState, 
     reducers:{
-        getWeatherDetail : (state, action) =>{
-            WeatherApi(action.payload)
-                .then(details => {
-                    state.data = details;
-                })
-                .catch(error => {
-                    console.error('Error fetching weather:', error);
-                });
+        getWeatherDetail:(state , action)=>{
+            state.details = action.payload
         }
     }
 })
-
 
 export const {getWeatherDetail} = weatherSlice.actions
 
