@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import {useSelector , useDispatch} from 'react-redux';
 import { getWeatherDetail } from '../Features/weatherFeature';
-
+import {Api_key} from '../ApiKeys';
 
 const AddCity = () => {
   const [city, setCity] = useState('Gujranwala');
   const [country, setCountry] = useState('Pakistan');
-  const Api_key = 'cfc407cc28228f738b64a5d6a7c28e08';
+ 
   const dispatch = useDispatch();
   const details = useSelector(state => state.weather.details);
   const [convert_temp, setConvertTemp] = useState(null);
