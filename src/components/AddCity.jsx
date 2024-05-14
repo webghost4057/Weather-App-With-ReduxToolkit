@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import {useSelector , useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getWeatherDetail } from '../Features/weatherFeature';
-import {Api_key} from '../ApiKeys';
+import { Api_key } from '../ApiKeys';
 
 const AddCity = () => {
   const [city, setCity] = useState('Gujranwala');
-  const [country, setCountry] = useState('Pakistan');
- 
+  const [country, setCountry] = useState('Pakistan')
+
   const dispatch = useDispatch();
   const details = useSelector(state => state.weather.details);
   const [convert_temp, setConvertTemp] = useState(null);
@@ -18,14 +18,22 @@ const AddCity = () => {
       setConvertTemp(Math.floor(details.main.temp - 273.15));
     }
   }, [details]);
-  
+
   const fetchData = async () => {
     try {
       const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${Api_key}`);
+      if (!response.ok) {
+        if (response.status === 404) {
+          alert("Data Not Found Corresponding entered Credentials")
+          throw new Error('City or country not found');
+        } else {
+          throw new Error('Failed to fetch weather data');
+        }
+      }
       const data = await response.json();
       dispatch(getWeatherDetail(data));
     } catch (error) {
-      console.log(error);
+      console.log("Error Found", error);
     }
   };
 
@@ -43,15 +51,15 @@ const AddCity = () => {
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
                 <label htmlFor="city" className="sr-only">City</label>
-                <input id="city" name="city" type="text" autoComplete="city"  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Enter city"
-                value={city}
-                onChange={(e)=>setCity(e.target.value)} />
+                <input id="city" name="city" type="text" autoComplete="city" className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Enter city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)} />
               </div>
               <div>
                 <label htmlFor="country" className="sr-only">Country</label>
-                <input id="country" name="country" type="text" autoComplete="country"  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Enter country"
-                value={country}
-                onChange={(e)=>setCountry(e.target.value)} />
+                <input id="country" name="country" type="text" autoComplete="country" className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Enter country"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)} />
               </div>
             </div>
             <div>
@@ -66,7 +74,7 @@ const AddCity = () => {
               <img className="w-20 h-20" src="http://openweathermap.org/img/wn/01d.png" alt="Weather icon" />
               <div className="ml-4">
                 <p className="text-2xl font-semibold">{convert_temp}C</p>
-                <p className="text-gray-500">Sunny</p> 
+                <p className="text-gray-500">Sunny</p>
               </div>
             </div>
           </div>
