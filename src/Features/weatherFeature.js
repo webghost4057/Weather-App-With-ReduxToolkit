@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit'
-import WeatherApi from '../Api/WeatherApi'
 const initialState={
     details : null
 }
@@ -11,10 +10,11 @@ export const weatherSlice = createSlice({
     reducers:{
         getWeatherDetail:(state , action)=>{
             state.details = action.payload
+            console.log("@@@@@@@@@",state.details);
         }
     }
 })
 
 export const {getWeatherDetail} = weatherSlice.actions
 
-export default weatherSlice.reducer
+export default weatherSlice.reducer 

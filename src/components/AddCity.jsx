@@ -1,29 +1,34 @@
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useSelector , useDispatch} from 'react-redux';
 import { getWeatherDetail } from '../Features/weatherFeature';
 
 
 const AddCity = () => {
-  const [city , setCity] = useState('Gujranwala')
-  const [country , setCountry] = useState('Pakistan')
-
+  const [city, setCity] = useState('Gujranwala');
+  const [country, setCountry] = useState('Pakistan');
   const Api_key = 'cfc407cc28228f738b64a5d6a7c28e08';
   const dispatch = useDispatch();
-  const details = useSelector(state=>state.details)
+  const details = useSelector(state => state.weather.details);
+  const [convert_temp, setConvertTemp] = useState(null);
 
-  const fetchData = async() =>{
-    console.log("############");
-   {
-      try {
-        const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${Api_key}`);
-        const data = await response.json();
-        dispatch(getWeatherDetail(data))
-      } catch (error) {
-        console.log(error);
-      }
-      return data
+  useEffect(() => {
+    if (details === null) {
+      fetchData();
+    } else {
+      setConvertTemp(Math.floor(details.main.temp - 273.15));
     }
-  }
+  }, [details]);
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${Api_key}`);
+      const data = await response.json();
+      dispatch(getWeatherDetail(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
 
 
@@ -60,8 +65,8 @@ const AddCity = () => {
             <div className="flex items-center justify-center">
               <img className="w-20 h-20" src="http://openweathermap.org/img/wn/01d.png" alt="Weather icon" />
               <div className="ml-4">
-                <p className="text-2xl font-semibold">25°C</p>
-                <p className="text-gray-500">Sunny</p>
+                <p className="text-2xl font-semibold">{convert_temp}C</p>
+                <p className="text-gray-500">Sunny</p> 
               </div>
             </div>
           </div>
